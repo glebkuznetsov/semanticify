@@ -29,11 +29,11 @@ def get_tags_from_delicious(url_link):
     # Avoid getting throttled.
     time.sleep(2)
 
-    # By inspecting how their search results page works,
-    # it looks like they make a POST request to DELICIOUS_SEARCH_ROOT
-    # with the following data packet, where the query is the "content"
+    # By manually inspecting how the Delicious search results page works,
+    # I learned that they make a POST request to DELICIOUS_SEARCH_ROOT
+    # with the following data structure, where the query is the "content"
     # part of the url you are search for.
-    # That is 'http://www.blah.com' would become www.blah.com.
+    # That is 'http://www.blah.com' would become 'www.blah.com'.
     query = urlsplit(url_link).netloc
     data = urllib.urlencode({
         'p': query,
@@ -41,7 +41,7 @@ def get_tags_from_delicious(url_link):
         'f': '1'
     })
 
-    # Make the actual request to delicious
+    # Make a POST request to Delicious and read the results.
     search_results = urllib2.urlopen(DELICIOUS_SEARCH_ROOT, data).read()
 
     # Parse the shit it out of it, dirty.
@@ -70,6 +70,11 @@ def run(input_html, output_pickle):
     input_fh = open(input_html)
     output_fh = open(output_pickle, 'w')
 
+    # Store the aggregated results in a dict structure of the form:
+    # {
+    #     'blah.com': ['tag1', 'tag2', 'tag3']
+    #     'apple.com': ['computers', 'shiny', 'ipod']
+    # }
     all_results = {}
 
     # Search for all the href's to look up.
@@ -89,5 +94,5 @@ def run(input_html, output_pickle):
 
 if __name__ == '__main__':
     input_html = 'nyc.html'
-    output_html = 'test'
-    run(input_html, output_html)
+    output_pickle = 'all_results_pickle'
+    run(input_html, output_pickle)

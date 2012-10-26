@@ -56,7 +56,7 @@ semanticify.PageView = Backbone.View.extend({
 
 
   appendUrl: function(url) {
-    $('ul', this.el).append(
+    $('#unselected-urls', this.el).append(
         '<li><a href="' + url.get('url') + '">' + url.get('url') + '</a>' +
         '<div id=' + url.get('id') + '></div>' + '</li>');
 

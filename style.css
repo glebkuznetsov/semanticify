@@ -15,7 +15,10 @@
 
 .original-tag-container-selected {
   background-color: green;
+  border: 1px solid green;
   color: white;
+  margin: 5px;
+  padding: 0 2px 0 2px;
 }
 
 #selected-urls-container {

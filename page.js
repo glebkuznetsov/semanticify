@@ -87,6 +87,7 @@ semanticify.PageView = Backbone.View.extend({
   events: {
     'keyup #search-input': 'handleSearchKeyUp',
     'click .selected-tag': 'handleRemoveTag',
+    'click .original-tag-container-selected': 'handleRemoveTag',
     'click .original-tag-container': 'updateSearch',
   },
 
@@ -108,7 +109,7 @@ semanticify.PageView = Backbone.View.extend({
     _.each(url.get('tags'), _.bind(function(tag) {
       var tagContainerClass = 'original-tag-container';
       if (tag in this.model.get('selectedTags')) {
-        tagContainerClass += ' original-tag-container-selected';
+        tagContainerClass = ' original-tag-container-selected';
       }
       $('#'+url.get('id')).append(
         '<span class="' + tagContainerClass +'">'+tag+'</span>'

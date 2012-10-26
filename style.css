@@ -9,6 +9,12 @@
 
 .original-tag-container {
   border: 1px solid green;
+  margin: 5px;
+}
+
+.original-tag-container-selected {
+  background-color: green;
+  color: white;
 }
 
 #selected-urls-container {
@@ -22,7 +28,9 @@
 }
 
 .selected-tag {
-  border: 1px solid red;
+  border: 1px solid green;
+  background-color: green;
+  color: white;
   display: inline-block;
   margin: 5px;
   padding: 5px;

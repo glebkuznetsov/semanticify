@@ -4,6 +4,7 @@
 /** Stores the state of the entire page. */
 semanticify.Page = Backbone.Model.extend({
   defaults: {
+    // Key indicates that a tag is selected, value is true by default
     'selectedTags': {},
   },
 
@@ -51,7 +52,8 @@ semanticify.PageView = Backbone.View.extend({
 
   events: {
     'keyup #search-input': 'handleSearchKeyUp',
-    'click .selected-tag': 'handleRemoveTag'
+    'click .selected-tag': 'handleRemoveTag',
+    'click .original-tag-container': 'updateSearch',
   },
 
 
@@ -64,9 +66,7 @@ semanticify.PageView = Backbone.View.extend({
 
 
   updateTags: function(url) {
-    console.log('updateTags: '+url.get('url'));
     _.each(url.get('tags'), function(tag) {
-      console.log(url.get('id'));
       $('#'+url.get('id')).append('<span class="original-tag-container">'+tag+'</span> ');
     });
   },
@@ -100,6 +100,10 @@ semanticify.PageView = Backbone.View.extend({
     $('#selected-tag-container').append(
         '<div class="selected-tag">' + tagName + '</div>'
     );
+  },
+
+  updateSearch: function(e) {
+    console.log(e.target);
   },
 
 

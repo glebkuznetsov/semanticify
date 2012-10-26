@@ -12,12 +12,19 @@
         <script src="url.js"></script>
         <script src="page.js"></script>
         <script src="app.js"></script>
+
+        <link rel="stylesheet" href="style.css" type="text/css"/>
     </head>
     <body>
       <h1>Semantic-ify</h1>
 
       <div id="container">
-        <ul>
+        <div id="search-container" class="search-container">
+          Search
+          <input id="search-input" type="text">
+        </div>
+
+        <ul id="live-urls">
         </ul>
       </div>
     </body>

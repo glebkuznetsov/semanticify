@@ -31,15 +31,13 @@ semanticify.Page = Backbone.Model.extend({
 
   removeSelectedTag: function(tagName) {
     delete this.get('selectedTags')[tagName];
-    console.log('selectedTags', this.get('selectedTags'));
 
     this.updateSelectedUrls();
   },
 
   /** Update which urls are in the selected region. */
   updateSelectedUrls: function() {
-    var urlMap = this.get('selectedUrls');
-    urlMap = {};
+    this.set('selectedUrls', {});
 
     // Initial implementation: Loop over all the urls and cross reference.
     _.each(this.urlCollection.models, _.bind(function(url) {
@@ -49,8 +47,6 @@ semanticify.Page = Backbone.Model.extend({
         }
       }, this));
     }, this));
-
-    console.log('urlMap', urlMap);
 
     this.trigger('urls-updated');
   },

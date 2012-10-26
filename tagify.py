@@ -7,6 +7,7 @@ http://nytm.org/made-in-nyc,
 which was the motivation for building this script in the first place.
 """
 
+import json
 import pickle
 import re
 import time
@@ -92,7 +93,62 @@ def run(input_html, output_pickle):
     output_fh.close()
 
 
+def dump_results_to_json(pickled_results_file, output_js):
+    """Take the pickled results and write a jsonified form to output_js.
+
+    The pickled results are of the form, e.g.:
+        {
+            'blah.com': ['tag1', 'tag2', 'tag3']
+            'apple.com': ['computers', 'shiny', 'ipod']
+        }
+
+    The output results should be keyed by some id, e.g:
+        {
+            1: {
+                    'url': 'http://blah.com',
+                    'tags': ['tag1', 'tag2', 'tag3']
+            },
+            2: {
+                    'url': 'http://apple.com',
+                    'tags': ['computers', 'shiny', 'ipod']
+
+            }
+        }
+    """
+    pickle_fh = open(pickled_results_file)
+    output_fh = open(output_js, 'w')
+
+    # This object is of the form.
+    # {
+    #     'blah.com': ['tag1', 'tag2', 'tag3']
+    #     'apple.com': ['computers', 'shiny', 'ipod']
+    # }
+    unpickled_results_obj = pickle.load(pickle_fh)
+
+
+    objects_by_id = {}
+
+    id = 0
+    for url, tags in unpickled_results_obj.iteritems():
+        objects_by_id[id] = {
+                'url': url,
+                'tags': tags
+        }
+        id += 1
+
+
+    jsonified = json.dumps(objects_by_id)
+    output_fh.write(jsonified)
+
+    pickle_fh.close()
+    output_fh.close()
+
+
 if __name__ == '__main__':
     input_html = 'nyc.html'
     output_pickle = 'all_results_pickle'
-    run(input_html, output_pickle)
+    output_js = 'data.js'
+
+    # run(input_html, output_pickle)
+
+    dump_results_to_json(output_pickle, output_js)

@@ -45,7 +45,6 @@ semanticify.Page = Backbone.Model.extend({
     _.each(this.urlCollection.models, _.bind(function(url) {
       _.each(url.get('tags'), _.bind(function(tagName) {
         if (tagName in this.get('selectedTags')) {
-          alert(tagName);
           this.get('selectedUrls')[url.get('id')] = url;
         }
       }, this));

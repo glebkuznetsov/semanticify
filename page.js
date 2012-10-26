@@ -5,6 +5,7 @@
 semanticify.Page = Backbone.Model.extend({
   defaults: {
     'selectedTags': {},
+    'selectedUrls': {}
   },
 
   initialize: function() {
@@ -23,6 +24,28 @@ semanticify.Page = Backbone.Model.extend({
 
   addSelectedTag: function(tagName) {
     this.get('selectedTags')[tagName] = true;
+    console.log(this.get('selectedTags'));
+
+    this.updateSelectedUrls();
+  },
+
+  /** Update which urls are in the selected region. */
+  updateSelectedUrls: function() {
+    var urlMap = this.get('selectedUrls');
+    urlMap = {};
+
+    // Initial implementation: Loop over all the urls and cross reference.
+    _.each(this.urlCollection.models, _.bind(function(url) {
+      _.each(url.get('tags'), _.bind(function(tagName) {
+        if (tagName in this.get('selectedTags')) {
+          this.get('selectedUrls')[url.get('id')] = url;
+        }
+      }, this));
+    }, this));
+
+    console.log('urlMap', urlMap);
+
+    this.trigger('urls-updated');
   },
 });
 
@@ -34,10 +57,18 @@ semanticify.PageView = Backbone.View.extend({
 
   initialize: function() {
     this.render();
+
+    this.model.on('urls-updated', _.bind(function() {
+      this.render();
+    }, this));
   },
 
 
   render: function() {
+    // Wipe anything drawn previously.
+    $('#selected-urls', this.el).empty();
+    $('#unselected-urls', this.el).empty();
+
      _.each(this.model.urlCollection.models, _.bind(function(url) {
       this.appendUrl(url);
       this.updateTags(url);
@@ -56,17 +87,20 @@ semanticify.PageView = Backbone.View.extend({
 
 
   appendUrl: function(url) {
-    $('#unselected-urls', this.el).append(
+    var urlElementHtml =
         '<li><a href="' + url.get('url') + '">' + url.get('url') + '</a>' +
-        '<div id=' + url.get('id') + '></div>' + '</li>');
+        '<div id=' + url.get('id') + '></div>' + '</li>';
 
+    if (url.get('id') in this.model.get('selectedUrls')) {
+      $('#selected-urls', this.el).append(urlElementHtml);
+    } else {
+      $('#unselected-urls', this.el).append(urlElementHtml);
+    }
   },
 
 
   updateTags: function(url) {
-    console.log('updateTags: '+url.get('url'));
     _.each(url.get('tags'), function(tag) {
-      console.log(url.get('id'));
       $('#'+url.get('id')).append('<span class="original-tag-container">'+tag+'</span> ');
     });
   },

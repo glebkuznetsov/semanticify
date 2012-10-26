@@ -25,7 +25,13 @@ semanticify.Page = Backbone.Model.extend({
 
   addSelectedTag: function(tagName) {
     this.get('selectedTags')[tagName] = true;
-    console.log(this.get('selectedTags'));
+
+    this.updateSelectedUrls();
+  },
+
+  removeSelectedTag: function(tagName) {
+    delete this.get('selectedTags')[tagName];
+    console.log('selectedTags', this.get('selectedTags'));
 
     this.updateSelectedUrls();
   },
@@ -39,6 +45,7 @@ semanticify.Page = Backbone.Model.extend({
     _.each(this.urlCollection.models, _.bind(function(url) {
       _.each(url.get('tags'), _.bind(function(tagName) {
         if (tagName in this.get('selectedTags')) {
+          alert(tagName);
           this.get('selectedUrls')[url.get('id')] = url;
         }
       }, this));
@@ -67,6 +74,7 @@ semanticify.PageView = Backbone.View.extend({
 
   render: function() {
     // Wipe anything drawn previously.
+    $('#selected-tag-container').empty();
     $('#selected-urls', this.el).empty();
     $('#unselected-urls', this.el).empty();
 
@@ -123,9 +131,6 @@ semanticify.PageView = Backbone.View.extend({
     // Update the model.
     this.model.addSelectedTag(tagName);
 
-    // Update the view.
-    this.updateSelectedTagView(tagName);
-
     // Clear the input.
     $('#search-input').val('');
   },
@@ -142,7 +147,6 @@ semanticify.PageView = Backbone.View.extend({
     var tagName = $(e.target).html()
     if (!(this.model.get('selectedTags')[tagName])) {
       this.model.addSelectedTag(tagName);
-      this.updateSelectedTagView(tagName);
     }
   },
 
@@ -150,8 +154,6 @@ semanticify.PageView = Backbone.View.extend({
   handleRemoveTag: function(e) {
     $(e.target).fadeOut(400);
     var tagName = $(e.target).html()
-    if (this.model.get('selectedTags')[tagName]) {
-      this.model.get('selectedTags')[tagName] = false;
-    }
+    this.model.removeSelectedTag(tagName);
   },
 });

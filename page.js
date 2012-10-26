@@ -62,7 +62,7 @@ semanticify.PageView = Backbone.View.extend({
     console.log('updateTags: '+url.get('url'));
     _.each(url.get('tags'), function(tag) {
       console.log(url.get('id'));
-      $('#'+url.get('id')).append(tag+' ');
+      $('#'+url.get('id')).append('<span class="original-tag-container">'+tag+'</span> ');
     });
   },
 

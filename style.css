@@ -1,4 +1,14 @@
-.search-container {
+#search-container {
   border: 1px solid black;
+}
 
+#selected-tag-container {
+  border: 1px solid blue;
+}
+
+.selected-tag {
+  border: 1px solid red;
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
 }

@@ -3,6 +3,10 @@
 
 /** Stores the state of the entire page. */
 semanticify.Page = Backbone.Model.extend({
+  defaults: {
+    'selectedTags': {},
+  },
+
   initialize: function() {
     this.urlCollection = new semanticify.UrlCollection();
 
@@ -15,6 +19,10 @@ semanticify.Page = Backbone.Model.extend({
 
       this.urlCollection.add(url);
     }, this));
+  },
+
+  addSelectedTag: function(tagName) {
+    this.get('selectedTags')['tagName'] = true;
   },
 });
 
@@ -33,9 +41,34 @@ semanticify.PageView = Backbone.View.extend({
      }, this));
   },
 
+  events: {
+    'keyup #search-input': 'handleSearchKeyUp',
+  },
+
   appendUrl: function(url) {
-    console.log(url.get('url'));
     $('ul', this.el).append(
         '<li><a href="' + url.get('url') + '">' + url.get('url') + '</a></li>');
-  }
+  },
+
+  handleSearchKeyUp: function(e) {
+    var ENTER_KEY_CODE = 13;
+
+    if (e.keyCode == ENTER_KEY_CODE) {
+      this.addSelectedTag();
+    }
+  },
+
+  addSelectedTag: function() {
+    var currentValue = $('#search-input').val();
+
+    // Update the model.
+    this.model.addSelectedTag(currentValue);
+
+    $('#selected-tag-container').append(
+        '<div class="selected-tag">' + currentValue + '</div>'
+    );
+
+    // Clear the input.
+    $('#search-input').val('');
+  },
 });

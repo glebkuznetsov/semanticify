@@ -18,11 +18,6 @@ semanticify.Page = Backbone.Model.extend({
       });
 
       this.urlCollection.add(url);
-
-      // Make all the tags selected.
-      _.each(rawUrlObj.tags, _.bind(function(tagName) {
-        this.addSelectedTag(tagName);
-      }, this));
     }, this));
   },
 
@@ -56,6 +51,7 @@ semanticify.PageView = Backbone.View.extend({
 
   events: {
     'keyup #search-input': 'handleSearchKeyUp',
+    'click .selected-tag': 'handleRemoveTag'
   },
 
 
@@ -104,5 +100,10 @@ semanticify.PageView = Backbone.View.extend({
     $('#selected-tag-container').append(
         '<div class="selected-tag">' + tagName + '</div>'
     );
-  }
+  },
+
+
+  handleRemoveTag: function(e) {
+    $(e.target).fadeOut(400);
+  },
 });

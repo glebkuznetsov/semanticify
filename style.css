@@ -10,6 +10,14 @@
   border: 1px solid green;
 }
 
+#selected-urls-container {
+  border: 1px solid green;
+}
+
+#not-selected-urls-container {
+  border: 1px solid red;
+}
+
 .selected-tag {
   border: 1px solid red;
   display: inline-block;

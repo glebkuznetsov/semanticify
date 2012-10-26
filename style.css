@@ -6,6 +6,10 @@
   border: 1px solid blue;
 }
 
+#original-tag-container {
+  border: 1px solid green;
+}
+
 .selected-tag {
   border: 1px solid red;
   display: inline-block;

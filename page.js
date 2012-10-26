@@ -18,11 +18,16 @@ semanticify.Page = Backbone.Model.extend({
       });
 
       this.urlCollection.add(url);
+
+      // Make all the tags selected.
+      _.each(rawUrlObj.tags, _.bind(function(tagName) {
+        this.addSelectedTag(tagName);
+      }, this));
     }, this));
   },
 
   addSelectedTag: function(tagName) {
-    this.get('selectedTags')['tagName'] = true;
+    this.get('selectedTags')[tagName] = true;
   },
 });
 
@@ -41,6 +46,10 @@ semanticify.PageView = Backbone.View.extend({
      _.each(this.model.urlCollection.models, _.bind(function(url) {
       this.appendUrl(url);
       this.updateTags(url);
+     }, this));
+
+    _.each(_.keys(this.model.get('selectedTags')), _.bind(function(tagName) {
+      this.updateSelectedTagView(tagName);
      }, this));
   },
 
@@ -77,16 +86,23 @@ semanticify.PageView = Backbone.View.extend({
 
 
   addSelectedTag: function() {
-    var currentValue = $('#search-input').val();
+    var tagName = $('#search-input').val();
 
     // Update the model.
-    this.model.addSelectedTag(currentValue);
+    this.model.addSelectedTag(tagName);
 
-    $('#selected-tag-container').append(
-        '<div class="selected-tag">' + currentValue + '</div>'
-    );
+    // Update the view.
+    this.updateSelectedTagView(tagName);
 
     // Clear the input.
     $('#search-input').val('');
   },
+
+
+  /** Draw the newly selected tag to the view. */
+  updateSelectedTagView: function(tagName) {
+    $('#selected-tag-container').append(
+        '<div class="selected-tag">' + tagName + '</div>'
+    );
+  }
 });

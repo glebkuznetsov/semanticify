@@ -4,6 +4,7 @@
 /** Stores the state of the entire page. */
 semanticify.Page = Backbone.Model.extend({
   defaults: {
+    // Key indicates that a tag is selected, value is true by default
     'selectedTags': {},
     'selectedUrls': {}
   },
@@ -82,7 +83,8 @@ semanticify.PageView = Backbone.View.extend({
 
   events: {
     'keyup #search-input': 'handleSearchKeyUp',
-    'click .selected-tag': 'handleRemoveTag'
+    'click .selected-tag': 'handleRemoveTag',
+    'click .original-tag-container': 'updateSearch',
   },
 
 
@@ -132,12 +134,24 @@ semanticify.PageView = Backbone.View.extend({
   /** Draw the newly selected tag to the view. */
   updateSelectedTagView: function(tagName) {
     $('#selected-tag-container').append(
-        '<div class="selected-tag">' + tagName + '</div>'
+      '<div class="selected-tag">' + tagName + '</div>'
     );
+  },
+
+  updateSearch: function(e) {
+    var tagName = $(e.target).html()
+    if (!(this.model.get('selectedTags')[tagName])) {
+      this.model.addSelectedTag(tagName);
+      this.updateSelectedTagView(tagName);
+    }
   },
 
 
   handleRemoveTag: function(e) {
     $(e.target).fadeOut(400);
+    var tagName = $(e.target).html()
+    if (this.model.get('selectedTags')[tagName]) {
+      this.model.get('selectedTags')[tagName] = false;
+    }
   },
 });

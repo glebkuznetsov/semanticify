@@ -1,5 +1,6 @@
 #search-container {
   border: 1px solid black;
+  margin: 5px;
 }
 
 #selected-tag-container {
@@ -12,10 +13,12 @@
 
 #selected-urls-container {
   border: 1px solid green;
+  margin: 5px;
 }
 
 #not-selected-urls-container {
   border: 1px solid red;
+  margin: 5px;
 }
 
 .selected-tag {

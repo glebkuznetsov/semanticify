@@ -31,24 +31,41 @@ semanticify.Page = Backbone.Model.extend({
 semanticify.PageView = Backbone.View.extend({
   el: '#container',
 
+
   initialize: function() {
     this.render();
   },
 
+
   render: function() {
      _.each(this.model.urlCollection.models, _.bind(function(url) {
       this.appendUrl(url);
+      this.updateTags(url);
      }, this));
   },
+
 
   events: {
     'keyup #search-input': 'handleSearchKeyUp',
   },
 
+
   appendUrl: function(url) {
     $('ul', this.el).append(
-        '<li><a href="' + url.get('url') + '">' + url.get('url') + '</a></li>');
+        '<li><a href="' + url.get('url') + '">' + url.get('url') + '</a>' +
+        '<div id=' + url.get('id') + '></div>' + '</li>');
+
   },
+
+
+  updateTags: function(url) {
+    console.log('updateTags: '+url.get('url'));
+    _.each(url.get('tags'), function(tag) {
+      console.log(url.get('id'));
+      $('#'+url.get('id')).append(tag+' ');
+    });
+  },
+
 
   handleSearchKeyUp: function(e) {
     var ENTER_KEY_CODE = 13;
@@ -57,6 +74,7 @@ semanticify.PageView = Backbone.View.extend({
       this.addSelectedTag();
     }
   },
+
 
   addSelectedTag: function() {
     var currentValue = $('#search-input').val();

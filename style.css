@@ -6,7 +6,7 @@
   border: 1px solid blue;
 }
 
-#original-tag-container {
+.original-tag-container {
   border: 1px solid green;
 }
 
@@ -23,4 +23,16 @@
   display: inline-block;
   margin: 5px;
   padding: 5px;
+}
+
+li {
+  padding: 5px;
+}
+
+a, a:visited {
+  color: blue;
+}
+
+a:hover {
+  color: darkblue;
 }

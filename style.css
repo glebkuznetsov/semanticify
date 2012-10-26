@@ -10,6 +10,7 @@
 .original-tag-container {
   border: 1px solid green;
   margin: 5px;
+  padding: 0 2px 0 2px;
 }
 
 .original-tag-container-selected {

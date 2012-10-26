@@ -1,20 +1,24 @@
 <html>
     <head>
         <title>Semanticify</title>
-    </head>
-    <body>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
         <script src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
         <script src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
         <script src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
-        <script>
-            // Models
-            window.URL = Backbone.Model.extend();
 
-            //Views
-            window.URLListView = Backbone.View.extend({
-            });
+        <script src="data.js"></script>
+        <script src="namespace.js"></script>
+        <script src="url.js"></script>
+        <script src="page.js"></script>
+        <script src="app.js"></script>
+    </head>
+    <body>
+      <h1>Semantic-ify</h1>
 
-        </script>
+      <div id="container">
+        <ul>
+        </ul>
+      </div>
     </body>
 </html>

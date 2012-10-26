@@ -126,18 +126,19 @@ def dump_results_to_json(pickled_results_file, output_js):
     unpickled_results_obj = pickle.load(pickle_fh)
 
 
-    objects_by_id = {}
+    objects = []
 
     id = 0
     for url, tags in unpickled_results_obj.iteritems():
-        objects_by_id[id] = {
+        objects.append({
+                'id': id,
                 'url': url,
                 'tags': tags
-        }
+        })
         id += 1
 
-
-    jsonified = json.dumps(objects_by_id)
+    jsonified = json.dumps(objects)
+    output_fh.write('var data=')
     output_fh.write(jsonified)
 
     pickle_fh.close()

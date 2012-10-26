@@ -98,16 +98,24 @@ semanticify.PageView = Backbone.View.extend({
   /** Draw the newly selected tag to the view. */
   updateSelectedTagView: function(tagName) {
     $('#selected-tag-container').append(
-        '<div class="selected-tag">' + tagName + '</div>'
+      '<div class="selected-tag">' + tagName + '</div>'
     );
   },
 
   updateSearch: function(e) {
-    console.log(e.target);
+    var tagName = $(e.target).html()
+    if (!(this.model.get('selectedTags')[tagName])) {
+      this.model.addSelectedTag(tagName);
+      this.updateSelectedTagView(tagName);
+    }
   },
 
 
   handleRemoveTag: function(e) {
     $(e.target).fadeOut(400);
+    var tagName = $(e.target).html()
+    if (this.model.get('selectedTags')[tagName]) {
+      this.model.get('selectedTags')[tagName] = false;
+    }
   },
 });
